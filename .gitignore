@@ -1,3 +1,5 @@
 env/
 __pycache__/
 simple_notes_app/app/db/notes.db
+.pytest_cache/
+.coverage
