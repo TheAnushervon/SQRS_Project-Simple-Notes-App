@@ -4,23 +4,23 @@ on:
   push:
     branches: ["dev1", "development", "dev2"]
 
-jobs: 
+jobs:
   build_and_test:
     runs-on: ubuntu-latest
-    defaults: 
-      run: 
+    defaults:
+      run:
         working-directory: simple_notes_app
     steps:
       - uses: actions/checkout@v4
       - name: Set Up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: "3.12"
       - name: Install Poetry
-        run: pip install poetry 
+        run: pip install poetry
       - name: Install dependencies
         run: poetry install
       - name: verify of compilance with PEP8 standard
         run: poetry run flake8 app/
       - name: Run tests
-        run: poetry run pytest tests/
+        run: poetry run pytest --cov=app --cov-fail-under=90
