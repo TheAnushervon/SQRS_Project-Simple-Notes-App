@@ -15,7 +15,7 @@ jobs:
       - name: Set Up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
+          python-version: "3.11"
       - name: Install Poetry
         run: pip install poetry
       - name: Install dependencies
@@ -24,3 +24,5 @@ jobs:
         run: poetry run flake8 app/
       - name: Run tests
         run: poetry run pytest --cov=app --cov-fail-under=90
+      - name: Check for security via bandit
+        run: poetry run bandit -r .
