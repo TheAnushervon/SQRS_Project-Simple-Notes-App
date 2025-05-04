@@ -14,7 +14,7 @@
             margin: 0;
             background-color: #f0f2f5;
         }
-        .login-container {
+        .container {
             background-color: white;
             padding: 2rem;
             border-radius: 8px;
@@ -51,7 +51,7 @@
         button:hover {
             background-color: #166fe5;
         }
-        .register-link {
+        .link {
             text-align: center;
             margin-top: 1rem;
         }
@@ -65,9 +65,9 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="container">
         <h2>Login</h2>
-        <form action="/login" method="POST">
+        <form id="login-form">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>
@@ -78,9 +78,33 @@
             </div>
             <button type="submit">Log In</button>
         </form>
-        <div class="register-link">
+        <div class="link">
             <p>Don't have an account? <a href="/register">Register</a></p>
         </div>
     </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ username, password })
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Login failed');
+                }
+                const data = await response.json();
+                localStorage.setItem('token', data.access_token);
+                window.location.href = '/notes';
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    </script>
 </body>
 </html>
