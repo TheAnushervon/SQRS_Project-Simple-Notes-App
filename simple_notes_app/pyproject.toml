@@ -1,5 +1,4 @@
-[project]
-package-mode=false
+[tool.poetry]
 name = "simple-notes-app"
 version = "0.1.0"
 description = ""
@@ -8,22 +7,20 @@ authors = [
     {name = "Iliyas Dzhabbarov",email = "i.dzhabbarov@innopolis.university"},
     {name = "Muhammad Allayarov",email = "m.allayarov@innopolis.university"},
 ]
+package-mode = false
 readme = "README.md"
-dependencies = [
-    "fastapi (>=0.115.12,<0.116.0)",
-    "uvicorn (>=0.34.2,<0.35.0)",
-    "bcrypt (>=4.3.0,<5.0.0)",
-    "sqlalchemy (>=2.0.40,<3.0.0)",
-    "python-jose (>=3.4.0,<4.0.0)",
-    "passlib (>=1.7.4,<2.0.0)",
-    "pydantic[email] (>=2.11.4,<3.0.0)",
-    "python-multipart (>=0.0.20,<0.0.21)",
-]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+fastapi = ">=0.115.12,<0.116.0"
+uvicorn = ">=0.34.2,<0.35.0"
+bcrypt = ">=4.3.0,<5.0.0"
+sqlalchemy = ">=2.0.40,<3.0.0"
+python-jose = ">=3.4.0,<4.0.0"
+passlib = ">=1.7.4,<2.0.0"
+pydantic = {extras = ["email"], version = ">=2.11.4,<3.0.0"}
+python-multipart = ">=0.0.20,<0.0.21"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-
