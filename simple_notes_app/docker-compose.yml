@@ -1,7 +1,5 @@
-version: '3.8'
-
-services: 
-  app: 
+services:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
@@ -16,7 +14,7 @@ services:
   db:
     image: alpine:3.18
     volumes:
-      - db_data:/app/db  
+      - db_data:/app/db
     command: tail -f /dev/null
 
 volumes:
