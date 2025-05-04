@@ -1,0 +1,23 @@
+version: '3.8'
+
+services: 
+  app: 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=sqlite:////app/app/db/notes.db
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  db:
+    image: alpine:3.18
+    volumes:
+      - db_data:/app/db  
+    command: tail -f /dev/null
+
+volumes:
+  db_data:
