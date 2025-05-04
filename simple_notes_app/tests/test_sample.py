@@ -1,2 +1,3 @@
-def test(): 
-    assert 0 == 4%2
+def test():
+    if 0 != 4 % 2:
+        raise ValueError("Unexpected value")
