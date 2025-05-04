@@ -20,4 +20,5 @@ jobs:
         working-directory: simple_notes_app
         run: poetry install
       - name: Run tests
-        run: poetry run pytest simple_notes_app/tests/
+        working-directory: simple_notes_app
+        run: poetry run pytest tests/
