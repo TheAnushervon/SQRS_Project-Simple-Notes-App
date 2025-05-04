@@ -3,9 +3,9 @@ name = "simple-notes-app"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Anushervon Qodirzoda",email = "a.qodirzoda@innopolis.university"},
-    {name = "Iliyas Dzhabbarov",email = "i.dzhabbarov@innopolis.university"},
-    {name = "Muhammad Allayarov",email = "m.allayarov@innopolis.university"},
+    "Anushervon Qodirzoda <a.qodirzoda@innopolis.university>",
+    "Iliyas Dzhabbarov <i.dzhabbarov@innopolis.university>",
+    "Muhammad Allayarov <m.allayarov@innopolis.university>",
 ]
 package-mode = false
 readme = "README.md"
