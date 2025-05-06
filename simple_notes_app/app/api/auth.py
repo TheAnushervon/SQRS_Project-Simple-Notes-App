@@ -1,5 +1,4 @@
 """Authorization routes"""
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db_session
@@ -17,7 +16,18 @@ router = APIRouter(tags=["auth"])
 
 @router.post("/signup")
 async def signup(user: UserCreate, db: Session = Depends(get_db_session)):
-    """Register a new user."""
+    """Save new user in database
+
+    Args:
+        user: schema for user
+        db: session of database
+
+    Returns:
+        json object with success message
+
+    Raises:
+        HTTPException: if username or email already used for register
+    """
     db_user = db.query(User).filter(User.username == user.username).first()
     if db_user:
         raise HTTPException(
@@ -41,7 +51,18 @@ async def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db_session)
 ):
-    """Authenticate user and return JWT token."""
+    """Authenticate user and return JWT token.
+
+    Args:
+        form_data: request form with credentials from user
+        db: session for database
+
+    Returns:
+        A dict with JWT token
+
+    Raises:
+        HTTPException: if user credentials aren't correct
+    """
     user = db.query(User).filter(User.username == form_data.username).first()
     if not user or not verify_password(
         form_data.password, user.hashed_password

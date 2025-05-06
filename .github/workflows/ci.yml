@@ -30,15 +30,13 @@ jobs:
         run: poetry install
       - name: Verify of compilance with PEP8 standard
         run: poetry run flake8 .
-
       - name: Cyclomatic complexity analysis (fail if exceeds 5)
         run: poetry run lizard -C 5 -i 0
-
       - name: Run unit tests
         run: poetry run pytest --cov=app --cov-fail-under=90
       - name: Check for security via bandit
         run: poetry run bandit -r .
       - name: Check maintainability index
-        run: poetry run radon mi app/ -n A
+        run: poetry run radon mi app/ -n A -s
       - name: Check documentation coverage
-        run: poetry run interrogate app/ --fail-under=90 -q
+        run: poetry run docstr-coverage app/ -F 90

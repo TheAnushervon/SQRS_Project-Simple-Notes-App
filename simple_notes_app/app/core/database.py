@@ -1,3 +1,4 @@
+"""Database intitialization and session yield"""
 from typing import Any, Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session, declarative_base
@@ -18,7 +19,14 @@ def init_db():
 
 @contextmanager
 def get_db() -> Generator[Session, Any, None]:
-    """Provide a database session with transaction management."""
+    """Provide a database session with transaction management.
+
+    Yields:
+        Database session
+
+    Raises:
+        Exception: For any error, rollbacks first
+    """
     db = SessionLocal()
     try:
         yield db
@@ -31,6 +39,10 @@ def get_db() -> Generator[Session, Any, None]:
 
 
 def get_db_session() -> Generator[Session, Any, None]:
-    """Return a database session for dependency injection."""
+    """Return a database session for dependency injection.
+
+    Yields:
+        Database session
+    """
     with get_db() as session:
         yield session
