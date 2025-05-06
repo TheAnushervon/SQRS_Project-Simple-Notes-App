@@ -1,5 +1,4 @@
 """Dependency for getting current user"""
-
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from app.core.security import decode_access_token
@@ -8,7 +7,17 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
-    """Validate JWT token and return user data."""
+    """Validate JWT token and return user data.
+
+    Args:
+        token: JWT token
+
+    Returns:
+        A dict object with user id
+
+    Raises:
+        HTTPException: if user credentials are not valid
+    """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
