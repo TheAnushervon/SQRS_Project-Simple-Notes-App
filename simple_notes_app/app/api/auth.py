@@ -1,3 +1,5 @@
+"""Authorization routes"""
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db_session
@@ -5,7 +7,7 @@ from app.core.security import (
     verify_password,
     get_password_hash,
     create_access_token,
-    )
+)
 from app.models.user import User
 from app.schemas.user import UserCreate
 from fastapi.security import OAuth2PasswordRequestForm

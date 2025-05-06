@@ -1,3 +1,5 @@
+"""Model for notes"""
+
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.sql import func
 from app.core.database import Base

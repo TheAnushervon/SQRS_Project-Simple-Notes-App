@@ -1,3 +1,5 @@
+"""Pydantic schema for API, notes related"""
+
 from pydantic import BaseModel
 from datetime import datetime
 

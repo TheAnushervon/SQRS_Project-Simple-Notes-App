@@ -1,3 +1,5 @@
+"""Routes for interaction with notes"""
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.services.note_service import (

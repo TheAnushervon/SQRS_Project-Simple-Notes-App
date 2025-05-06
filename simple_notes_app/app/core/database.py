@@ -1,3 +1,5 @@
+"""Database initialization and its session management"""
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session, declarative_base
 from contextlib import contextmanager

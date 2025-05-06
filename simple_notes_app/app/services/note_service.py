@@ -1,3 +1,6 @@
+"""CRUD functions"""
+
+
 from sqlalchemy.orm import Session
 from app.models.notes import Note
 from app.schemas.note import NoteCreate, NoteUpdate
