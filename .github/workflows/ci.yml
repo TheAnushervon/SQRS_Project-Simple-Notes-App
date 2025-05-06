@@ -29,9 +29,11 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: verify of compilance with PEP8 standard
-        run: poetry run flake8 app/
-      - name: Run tests
+        run: poetry run flake8 .
+      - name: Run unit tests
         run: poetry run pytest --cov=app --cov-fail-under=90
+      - name: Run mutation tests
+        run: poetry run mutmut run
       - name: Check for security via bandit
         run: poetry run bandit -r .
       - name: Check maintainability index

@@ -1,37 +1,68 @@
 from fastapi.testclient import TestClient
 from app.main import app
+import uuid
 
 
 client = TestClient(app)
 
 
-def test_read_main():
-    response = client.get("/")
-    if response.status_code != 200:
-        raise AssertionError(f"Expected 200, got {response.status_code}")
-
-
 def test_register():
+    username = f"user_${uuid.uuid4()}"
+    email = f"user_${uuid.uuid4()}@example.com"
     response = client.post("/signup/",
                            headers={"accept": "application/json"},
                            json={
-                               "username": "str",
-                               "email": "user@example.com",
+                               "username": username,
+                               "email": email,
                                "password": "string"
                            })
     if response.status_code != 200:
-        raise AssertionError(f"Expected 200, got {response.status_code}")
+        raise AssertionError(f"Expected 200, got {response.json()} {username}")
 
 
 def test_login():
-    data = {"username": "str", "password": "string"}
+    username = f"user_${uuid.uuid4()}"
+    email = f"user_${uuid.uuid4()}@example.com"
+    response = client.post("/signup/",
+                           headers={"accept": "application/json"},
+                           json={
+                               "username": username,
+                               "email": email,
+                               "password": "string"
+                           })
+    data = {"username": username, "password": "string"}
     response = client.post("/login/", data=data)
     if response.status_code != 200:
         raise AssertionError(f"Expected 200, got {response.status_code}")
 
 
+def test_incorrect_login():
+    username = f"user_${uuid.uuid4()}"
+    email = f"user_${uuid.uuid4()}@example.com"
+    response = client.post("/signup/",
+                           headers={"accept": "application/json"},
+                           json={
+                               "username": username,
+                               "email": email,
+                               "password": "string"
+                           })
+    data = {"username": username, "password": "incorrect"}
+    response = client.post("/login/", data=data)
+    if response.status_code != 401:
+        raise AssertionError(f"Expected 401, got {response.status_code}")
+
+
 def test_get_api_notes():
-    data = {"username": "str", "password": "string"}
+    username = f"user_${uuid.uuid4()}"
+    email = f"user_${uuid.uuid4()}@example.com"
+    response = client.post("/signup/",
+                           headers={"accept": "application/json"},
+                           json={
+                               "username": username,
+                               "email": email,
+                               "password": "string"
+                           })
+    data = {"username": username, "password": "string"}
     response = client.post("/login/", data=data)
 
     token = "Bearer " + response.json()["access_token"]
@@ -43,7 +74,16 @@ def test_get_api_notes():
 
 
 def test_post_api_notes():
-    data = {"username": "str", "password": "string"}
+    username = f"user_${uuid.uuid4()}"
+    email = f"user_${uuid.uuid4()}@example.com"
+    response = client.post("/signup/",
+                           headers={"accept": "application/json"},
+                           json={
+                               "username": username,
+                               "email": email,
+                               "password": "string"
+                           })
+    data = {"username": username, "password": "string"}
     response = client.post("/login/", data=data)
 
     token = "Bearer " + response.json()["access_token"]
@@ -56,29 +96,60 @@ def test_post_api_notes():
         raise AssertionError(f"Expected 200, got {response.status_code}")
 
 
-
 def test_put_api_notes():
-    data = {"username": "str", "password": "string"}
+    username = f"user_${uuid.uuid4()}"
+    email = f"user_${uuid.uuid4()}@example.com"
+    response = client.post("/signup/",
+                           headers={"accept": "application/json"},
+                           json={
+                               "username": username,
+                               "email": email,
+                               "password": "string"
+                           })
+    data = {"username": username, "password": "string"}
     response = client.post("/login/", data=data)
 
     token = "Bearer " + response.json()["access_token"]
-    request = {"title": "str",
+    request = {"title": "title",
                "content": "string"}
+    response = client.post(
+        "/api/notes/", headers={"accept": "application/json",
+                                "Authorization": token}, json=request)
+    new_request = {"title": "titlle",
+                   "content": "string"}
+    note_id = response.json()["id"]
     response = client.put(
-        "/api/notes/1/", headers={"accept": "application/json",
-                                  "Authorization": token}, json=request)
+        f"/api/notes/{note_id}/",
+        headers={"accept": "application/json",
+                 "Authorization": token},
+        json=new_request)
     if response.status_code != 200:
-        raise AssertionError(f"Expected 200, got {response.status_code}")
-    
+        raise AssertionError(
+            f"Expected 200, got {response.status_code} {response.json()}")
 
 
 def test_delete_api_notes():
-    data = {"username": "str", "password": "string"}
+    username = f"user_${uuid.uuid4()}"
+    email = f"user_${uuid.uuid4()}@example.com"
+    response = client.post("/signup/",
+                           headers={"accept": "application/json"},
+                           json={
+                               "username": username,
+                               "email": email,
+                               "password": "string"
+                           })
+    data = {"username": username, "password": "string"}
     response = client.post("/login/", data=data)
 
     token = "Bearer " + response.json()["access_token"]
+    request = {"title": "title",
+               "content": "string"}
+    response = client.post(
+        "/api/notes/", headers={"accept": "application/json",
+                                "Authorization": token}, json=request)
+    note_id = response.json()["id"]
     response = client.delete(
-        "/api/notes/1/", headers={"accept": "application/json",
-                                  "Authorization": token})
+        f"/api/notes/{note_id}/", headers={"accept": "application/json",
+                                           "Authorization": token})
     if response.status_code != 200:
         raise AssertionError(f"Expected 200, got {response.status_code}")

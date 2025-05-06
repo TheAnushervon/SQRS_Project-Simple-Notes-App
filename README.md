@@ -119,6 +119,7 @@ You can run the project using **either Docker** or **Python 3.11 + Poetry**.
 
 ### Steps
 
+
 1. **Clone the Repository**:
 
 ```bash
@@ -154,6 +155,7 @@ poetry run uvicorn app.main:app --reload
 
 
 ### Access the Application
+
 - Open `http://localhost:8000` in your browser.
 - Register a new user, log in, and manage notes at `/notes`.
 - View API documentation at `http://localhost:8000/docs`.
