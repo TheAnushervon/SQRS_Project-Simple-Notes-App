@@ -2,7 +2,10 @@ name: CI
 
 on:
   push:
-    branches: ["dev1", "development", "dev2"]
+    branches: ["dev1", "dev/iliyasone", "dev2"]
+  pull_request:
+    branches: ["main", "development"]
+
 
 jobs:
   build_and_test:
@@ -26,3 +29,7 @@ jobs:
         run: poetry run pytest --cov=app --cov-fail-under=90
       - name: Check for security via bandit
         run: poetry run bandit -r .
+      - name: Check maintainability index
+        run: poetry run radon mi app/ -n B
+      - name: Check documentation coverage
+        run: poetry run interrogate app/ --fail-under=90 -q
