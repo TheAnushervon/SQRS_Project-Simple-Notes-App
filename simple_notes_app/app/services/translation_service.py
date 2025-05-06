@@ -2,7 +2,6 @@ import os
 import re
 import hashlib
 import httpx
-import os
 
 
 from sqlalchemy.orm import Session
@@ -19,30 +18,27 @@ if not X_RAPID_API_KEY:
 if not X_RAPID_API_HOST:
     raise RuntimeError("X_RAPID_API_HOST not defined")
 
+
 def _src_hash(text: str) -> str:
     return hashlib.sha256(text.encode()).hexdigest()
 
 
 def _translate_text(text: str, src_lang: str = "ru", dst_lang: str = "en") -> str:
-    endpoint =  "language/translate/v2"
+    endpoint = "language/translate/v2"
     url = "https://%s/%s" % (X_RAPID_API_HOST, endpoint)
     resp = httpx.post(
         url=url,
-        json={
-            "source": src_lang,
-            "target": dst_lang,
-            "q": text
-        },
+        json={"source": src_lang, "target": dst_lang, "q": text},
         headers={
             "x-rapidapi-key": X_RAPID_API_KEY,
             "x-rapidapi-host": X_RAPID_API_HOST,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
-        timeout=5
+        timeout=5,
     )
     resp.raise_for_status()
     translated: list[str] = resp.json()["data"]["translations"]["translatedText"]
-    return ''.join(translated)
+    return "".join(translated)
 
 
 def translate_note(db: Session, note_id: int, text: str) -> str:
@@ -53,16 +49,11 @@ def translate_note(db: Session, note_id: int, text: str) -> str:
 
     translated = _translate_text(text)
     tr = Translation(
-        note_id=note_id,
-        src_hash=h,
-        src_lang="ru",
-        dst_lang="en",
-        translated=translated
+        note_id=note_id, src_hash=h, src_lang="ru", dst_lang="en", translated=translated
     )
     db.add(tr)
     db.commit()
     return translated
-
 
 
 def contains_russian(text: str) -> bool:
