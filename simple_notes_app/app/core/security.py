@@ -5,7 +5,10 @@ from passlib.context import CryptContext
 import os
 
 
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "X23y88sdfj")
+SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("JWT_SECRET_KEY is not set in environment variables")
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
