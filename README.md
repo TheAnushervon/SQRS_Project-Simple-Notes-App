@@ -98,34 +98,62 @@ simple_notes_app/
 
 ```
 
+
 ## Setup and Installation
+
 ### Prerequisites
-- Python 3.11
-- Docker and Docker Compose
-- Git
+
+You can run the project using **either Docker** or **Python 3.11 + Poetry**.
+
+* **Option 1: Docker**:
+
+  * Docker
+  * Docker Compose
+
+* **Option 2: Poetry**:
+
+  * Python 3.11
+  * Poetry (install via `pip install poetry`)
+
+---
 
 ### Steps
+
 1. **Clone the Repository**:
+
 ```bash
 git clone https://github.com/TheAnushervon/SQRS_Project-Simple-Notes-App.git
-cd simple-notes-app
+cd SQRS_Project-Simple-Notes-App/simple_notes_app
 ```
 
-2. **Install Dependencies**:
-```bash
-python -m venv env
-source env/bin/activate
-pip install -r requirements.txt
-```
+---
 
-3. **Run the Application**:
-Using Docker Compose:
+### Option 1: Run with Docker
+
+2. **Build and Run the Application**:
+
 ```bash
 docker-compose up --build
 ```
 
+---
 
-4. **Access the Application**:
+### Option 2: Run with Python 3.11 + Poetry
+
+2. **Install Dependencies**:
+
+```bash
+poetry install --no-root
+```
+
+3. **Run the Application**:
+
+```bash
+poetry run uvicorn app.main:app --reload
+```
+
+
+### Access the Application
 - Open `http://localhost:8000` in your browser.
 - Register a new user, log in, and manage notes at `/notes`.
 - View API documentation at `http://localhost:8000/docs`.
