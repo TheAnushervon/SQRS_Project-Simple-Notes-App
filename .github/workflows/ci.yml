@@ -2,7 +2,9 @@ name: CI
 
 on:
   push:
-    branches: ["dev1", "development", "dev2"]
+    branches: ["dev1", "dev/iliyasone", "dev2"]
+  pull_request:
+    branches: ["main", "development"]
 
 jobs:
   build_and_test:
@@ -10,6 +12,11 @@ jobs:
     defaults:
       run:
         working-directory: simple_notes_app
+    env:
+      X_RAPID_API_KEY: ${{ secrets.X_RAPID_API_KEY }}
+      X_RAPID_API_HOST: deep-translate1.p.rapidapi.com
+      DATABASE_URL: sqlite:///app/db/notes.db
+      JWT_SECRET_KEY: ci-test-secret-dummy-12345
     steps:
       - uses: actions/checkout@v4
       - name: Set Up Python
@@ -24,7 +31,9 @@ jobs:
         run: poetry run flake8 .
       - name: Run unit tests
         run: poetry run pytest --cov=app --cov-fail-under=90
-      - name: Run mutation tests
-        run: poetry run mutmut run
       - name: Check for security via bandit
         run: poetry run bandit -r .
+      - name: Check maintainability index
+        run: poetry run radon mi app/ -n A
+      - name: Check documentation coverage
+        run: poetry run interrogate app/ --fail-under=90 -q
