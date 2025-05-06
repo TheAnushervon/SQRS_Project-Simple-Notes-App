@@ -569,6 +569,22 @@ doc = ["myst-parser", "sphinx", "sphinx-book-theme"]
 test = ["coverage", "pytest", "pytest-cov"]
 
 [[package]]
+name = "lizard"
+version = "1.17.28"
+description = "A code analyzer without caring the C/C++ header files. It works with Java, C/C++, JavaScript, Python, Ruby, Swift, Objective C. Metrics includes cyclomatic complexity number etc."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "lizard-1.17.28-py2.py3-none-any.whl", hash = "sha256:8570e4991e15538a39a56c539c4c795abed720aa6ba49fd364139556fc928de1"},
+    {file = "lizard-1.17.28.tar.gz", hash = "sha256:e34b0a955de2d836c6f74642b71320cb92f13e218f34dd1bbe43cd929dca2b23"},
+]
+
+[package.dependencies]
+pathspec = "*"
+pygments = "*"
+
+[[package]]
 name = "mando"
 version = "0.7.1"
 description = "Create Python CLI apps with little to no effort at all!"
@@ -1569,4 +1585,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.6.3)
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "65e1ba3a3dd25a7753f9f6820af4b9905ac2f27a7a4a4003628de6301a1111f9"
+content-hash = "8b37527858d48d2d2539c58e75fe15c907ce3a61c7de22339be981df3930b6ce"
