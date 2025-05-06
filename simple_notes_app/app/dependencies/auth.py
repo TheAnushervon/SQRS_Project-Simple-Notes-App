@@ -1,3 +1,5 @@
+"""Dependency for getting current user"""
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from app.core.security import decode_access_token

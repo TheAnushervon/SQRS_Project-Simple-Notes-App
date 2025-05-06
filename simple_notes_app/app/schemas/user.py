@@ -1,3 +1,5 @@
+"""Pydantic schema for API, user-related"""
+
 from pydantic import BaseModel, EmailStr
 
 

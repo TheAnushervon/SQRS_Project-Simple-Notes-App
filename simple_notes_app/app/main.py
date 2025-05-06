@@ -1,3 +1,5 @@
+"""Entrypoint for an application"""
+
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from app.api.auth import router as auth_router
