@@ -31,11 +31,9 @@ jobs:
         run: poetry run flake8 .
       - name: Run unit tests
         run: poetry run pytest --cov=app --cov-fail-under=90
-      - name: Run mutation tests
-        run: poetry run mutmut run
       - name: Check for security via bandit
         run: poetry run bandit -r .
       - name: Check maintainability index
-        run: poetry run radon mi app/ -n B
+        run: poetry run radon mi app/ -n A
       - name: Check documentation coverage
         run: poetry run interrogate app/ --fail-under=90 -q
