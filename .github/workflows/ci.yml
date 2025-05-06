@@ -15,7 +15,7 @@ jobs:
     env:
       X_RAPID_API_KEY: ${{ secrets.X_RAPID_API_KEY }}
       X_RAPID_API_HOST: deep-translate1.p.rapidapi.com
-      DATABASE_URL: sqlite:////app/app/db/notes.db
+      DATABASE_URL: sqlite:///app/db/notes.db
       JWT_SECRET_KEY: ci-test-secret-dummy-12345
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +30,7 @@ jobs:
       - name: verify of compilance with PEP8 standard
         run: poetry run flake8 .
       - name: Run unit tests
-        run: poetry run pytest --cov=app --cov-fail-under=90 -s
+        run: poetry run pytest --cov=app --cov-fail-under=90
       - name: Run mutation tests
         run: poetry run mutmut run
       - name: Check for security via bandit
@@ -39,4 +39,3 @@ jobs:
         run: poetry run radon mi app/ -n B
       - name: Check documentation coverage
         run: poetry run interrogate app/ --fail-under=90 -q
-
