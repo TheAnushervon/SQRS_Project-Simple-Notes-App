@@ -1,0 +1,5 @@
+{
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSaveMode": "file",
+    "python.envFile": "${workspaceFolder}/simple_notes_app/.env"
+}
