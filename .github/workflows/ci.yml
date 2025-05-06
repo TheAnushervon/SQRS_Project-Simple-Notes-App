@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: ["main", "development"]
 
-
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
@@ -31,7 +30,7 @@ jobs:
       - name: verify of compilance with PEP8 standard
         run: poetry run flake8 .
       - name: Run unit tests
-        run: poetry run pytest --cov=app --cov-fail-under=90
+        run: poetry run pytest --cov=app --cov-fail-under=90 -s
       - name: Run mutation tests
         run: poetry run mutmut run
       - name: Check for security via bandit
@@ -40,3 +39,4 @@ jobs:
         run: poetry run radon mi app/ -n B
       - name: Check documentation coverage
         run: poetry run interrogate app/ --fail-under=90 -q
+
