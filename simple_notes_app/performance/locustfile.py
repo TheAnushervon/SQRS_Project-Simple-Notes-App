@@ -61,7 +61,7 @@ class WebsiteUser(HttpUser):
                 new_request = {"title": "titlle",
                                "content": "string"}
                 self.client.put(
-                    f"/api/notes/{notes_list.pop()["id"]}",
+                    f"/api/notes/{notes_list.pop()['id']}",
                     headers={"accept": "application/json",
                              "Authorization": self.token},
                     json=new_request, name="/api/notes/{note_id}")
@@ -77,7 +77,7 @@ class WebsiteUser(HttpUser):
 
             if notes_list:
                 self.client.delete(
-                    f"/api/notes/{notes_list.pop()["id"]}",
+                    f"/api/notes/{notes_list.pop()['id']}",
                     headers={"accept": "application/json",
                              "Authorization": self.token},
                     name="/api/notes/{note_id}")
