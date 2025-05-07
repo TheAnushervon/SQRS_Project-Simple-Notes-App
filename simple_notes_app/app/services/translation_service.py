@@ -41,7 +41,7 @@ def _translate_text(text: str, src_lang: str = "ru", dst_lang: str = "en") -> st
     return "".join(translated)
 
 
-def translate_note(db: Session, note_id: int, text: str) -> str:
+def translate_note(db: Session, text: str) -> str:
     h = _src_hash(text)
     tr = db.query(Translation).filter_by(src_hash=h, dst_lang="en").first()
     if tr:
