@@ -4,98 +4,163 @@
 
 
 ## Features
-- **User Authentication**: 
-- **Note Management**: 
-- **Translation Service**: 
-- **Data Persistence**: 
-- **Responsive UI**: 
+- **User Authentication**
+- **Note Management**
+- **Translation Service**
+- **Data Persistence**
+- **Responsive UI**
 
 ## Technical Stack
 - **Language**: Python 3.11
 - **Framework**: FastAPI for REST API
 - **API Documentation**: OpenAPI (accessible at `/docs`)
 - **Database**: SQLite for persistent storage
-- **Front-End**: HTML/CSS/JavaScript templates served by FastAPI
+- **Front-End**: WIP
 - **Version Control**: GitHub
 - **Containerization**: Docker and Docker Compose
 - **Authentication**: JWT (python-jose) with bcrypt (passlib)
 - **Translation**: Deep Translate API
 
 
+## Quality Report
+
 ### Maintainability
-- **Code Style**:
-- **Maintainability Index**:
+- **Code Style**: Code follows PEP8 standard ensured by Flake8 on CI
+- **Maintainability Index**: Each file on application folder has this index higher than 80
+
+```bash
+╰─ poetry run radon mi app/ -s
+app/main.py - A (100.00)
+app/__init__.py - A (100.00)
+app/api/auth.py - A (81.44)
+app/api/notes.py - A (87.84)
+app/api/__init__.py - A (100.00)
+app/core/database.py - A (100.00)
+app/core/security.py - A (84.25)
+app/db/__init__.py - A (100.00)
+app/dependencies/auth.py - A (93.57)
+app/models/notes.py - A (100.00)
+app/models/translations.py - A (100.00)
+app/models/user.py - A (100.00)
+app/schemas/note.py - A (100.00)
+app/schemas/user.py - A (100.00)
+app/services/note_service.py - A (80.73)
+app/services/translation_service.py - A (84.66)
+```
+
 - **Modularity**: Code organized into reusable modules (`api`, `core`, `models`, `schemas`, `services`, `templates`).
-- **Documentation**:
+- **Documentation**: Coverage is 94.1%, also has CI check enabled to not fall below 90%
+
+```bash
+╰─ poetry run docstr-coverage app/
+Checking python files: 100%|█████████████████████████████████████████████████████████████████████████████████| 16.0/16.0 [00:00<00:00, 163files/s]
+
+File: "/mnt/c/Users/muhammad/sqrs-project/simple_notes_app/app/main.py"
+ - No docstring for `root`
+ - No docstring for `register`
+ - No docstring for `notes`
+ Needed: 4; Found: 1; Missing: 3; Coverage: 25.0%
+
+
+Overall statistics for 16 files (3 files are empty):
+Needed: 51  -  Found: 48  -  Missing: 3
+Total coverage: 94.1%  -  Grade: Excellent
+```
 
 ### Reliability
-- **Test Coverage**:
-- **Test Pass Rate**:
-- **Error Handling**:
+- **Test Coverage**: Unit tests cover 91% lines of code
+
+Part of the command `poetry run pytest --cov=app --cov-report=term-missing`:
+
+```
+Name                           Stmts   Miss  Cover   Missing
+------------------------------------------------------------
+app/__init__.py                    0      0   100%
+app/api/__init__.py                0      0   100%
+app/api/auth.py                   29      2    93%   33, 37
+app/api/notes.py                  32      2    94%   86, 113
+app/core/database.py              24      0   100%
+app/core/security.py              31      4    87%   13, 62, 83-84
+app/db/__init__.py                 0      0   100%
+app/dependencies/auth.py          13      2    85%   28, 31
+app/main.py                       24      9    62%   20-22, 27-29, 34-36
+app/models/notes.py               10      0   100%
+app/models/user.py                 8      0   100%
+app/schemas/note.py               14      0   100%
+app/schemas/user.py               13      0   100%
+app/services/note_service.py      27      2    93%   46, 69
+------------------------------------------------------------
+TOTAL                            225     21    91%
+```
+
+- **Test Pass Rate**: 100%, ensured by CI
+- **Error Handling**: We implemented rollback mechanism if any errors occur, see detailed in `app/core/database.py`
 - **Atomic Transactions**: SQLite transactions managed via SQLAlchemy, ensuring data consistency.
 
 ### Performance
-- **API Response Time**:
-- **Concurrent Users**:
-- **Database Optimization**:
+
+To analyze performance of our application we used Locust. We set number of concurrent users to 20 to see if minimal amount of users requirement can be satisfied:
+
+
 
 ### Security
 
-
-## Testing
-The application has been thoroughly tested to meet quality requirements:
-- **Unit Tests**:
-- **Integration Tests**:
-- **Static Analysis**:
-- **Performance Tests**:
-- **Security Scans**:
+- We used `bandit` to check if we have any critical vulnerabilities, also used it on CI to identify on push if any
+- Passwords hashed using `bcrypt`
+- Ensured that we have no user sensitive data leakage on API responses
 
 ## Project Structure
 ```
-simple_notes_app/
-│
-├── app/
-│   ├── __init__.py
-│   ├── main.py                 # FastAPI app setup and entry point
-│   ├── api/                   # API endpoints
-│   │   ├── __init__.py
-│   │   ├── auth.py            # Login and signup endpoints
-│   │   ├── notes.py           # Note CRUD endpoints
-│   │   └── translation.py     # Russian to English translation endpoint
-│   ├── core/                  # Configurations and utilities
-│   │   ├── __init__.py
-│   │   ├── config.py          # Settings (database URL, JWT secret)
-│   │   ├── database.py        # SQLite database setup
-│   │   └── security.py        # JWT and bcrypt handling
-│   ├── models/                # Database models
-│   │   ├── __init__.py
-│   │   ├── user.py            # User model
-│   │   └── note.py            # Note model
-│   ├── schemas/               # Pydantic schemas for validation
-│   │   ├── __init__.py
-│   │   ├── user.py            # User schemas
-│   │   ├── note.py            # Note schemas
-│   │   └── translation.py     # Translation schemas
-│   └── services/              # Business logic
-│       ├── __init__.py
-│       ├── auth_service.py    # Authentication logic
-│       ├── note_service.py    # Note management logic
-│       └── translation_service.py # Deep Translate API integration
-│
-├── tests/                     # Test suite
-│   ├── __init__.py
-│   ├── test_auth.py          # Authentication tests
-│   ├── test_notes.py         # Note management tests
-│   └── test_translation.py   # Translation tests
-│
-├── .gitignore                 # Git ignore file
-├── README.md                  # Project setup guide
-├── requirements.txt           # Dependencies (FastAPI, SQLAlchemy, etc.)
-├── pyproject.toml             # PEP8 and testing config
-├── .flake8                    # Flake8 config for PEP8
-└── .bandit                    # Bandit config for security
-
-
+.
+├── .vscode
+│   ├── launch.json
+│   └── settings.json
+├── simple_notes_app
+│   ├── app
+│   │   ├── api
+│   │   │   ├── __init__.py
+│   │   │   ├── auth.py
+│   │   │   └── notes.py
+│   │   ├── core
+│   │   │   ├── database.py
+│   │   │   └── security.py
+│   │   ├── db
+│   │   │   ├── __init__.py
+│   │   │   └── notes.db
+│   │   ├── dependencies
+│   │   │   └── auth.py
+│   │   ├── models
+│   │   │   ├── notes.py
+│   │   │   ├── translations.py
+│   │   │   └── user.py
+│   │   ├── schemas
+│   │   │   ├── note.py
+│   │   │   └── user.py
+│   │   ├── services
+│   │   │   ├── note_service.py
+│   │   │   └── translation_service.py
+│   │   ├── templates
+│   │   │   ├── login.html
+│   │   │   ├── notes.html
+│   │   │   └── register.html
+│   │   ├── __init__.py
+│   │   └── main.py
+│   ├── performance
+│   │   └── locustfile.py
+│   ├── tests
+│   │   ├── __init__.py
+│   │   └── test_api.py
+│   ├── .coverage
+│   ├── .env
+│   ├── .env.example
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   ├── poetry.lock
+│   └── pyproject.toml
+├── .flake8
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
 
@@ -170,4 +235,21 @@ The REST API is documented using OpenAPI, accessible at `http://localhost:8000/d
 - `PUT /api/notes/{note_id}`: Update a note.
 - `DELETE /api/notes/{note_id}`: Delete a note.
 
-## CI Integration
+## Team and Contribution
+
+Anushervon Qodirzoda | a.qodirzoda@innopolis.university
+  
+- Database
+- API: Notes, Authorization
+- Docker
+
+Iliays Dzhabbarov | i.dzhabbarov@innopolis.university
+
+- API: Translation
+- Frontend on Streamlit
+- Testing: UI
+
+Muhammad Allayarov | m.allayarov@innopolis.university
+
+- Testing: Unit, Mutation, Performance
+- Documentation

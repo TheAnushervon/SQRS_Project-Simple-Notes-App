@@ -51,11 +51,15 @@ bandit = "^1.8.3"
 radon = "^6.0.1"
 interrogate = "^1.7.0"
 python-dotenv = "^1.1.0"
-mutmut = "^3.2.3"
 lizard = "^1.17.28"
 locust = "^2.37.0"
 async-lru = "^2.0.5"
 docstr-coverage = "^2.3.2"
+mutmut = "^3.2.3"
+
+[tool.mutmut]
+ paths_to_mutate = [ "app/" ]
+ tests_dir = [ "tests/" ]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
