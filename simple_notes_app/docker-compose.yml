@@ -10,7 +10,21 @@ services:
     env_file:
       - .env
     command: poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-
+  streamlit:
+    environment:
+    - PYTHONPATH=/app
+    - API_URL=http://app:8000
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    working_dir: /app/
+    command: poetry run streamlit run streamlit_app/Home.py --server.address=0.0.0.0
   db:
     image: alpine:3.18
     volumes:
