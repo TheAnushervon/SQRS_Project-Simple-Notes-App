@@ -1,5 +1,5 @@
 from __future__ import annotations
-import httpx, streamlit as st
+import httpx
 from typing import Any
 from streamlit_app import API_URL
 
