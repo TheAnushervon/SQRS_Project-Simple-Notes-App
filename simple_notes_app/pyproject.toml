@@ -57,6 +57,7 @@ locust = "^2.37.0"
 async-lru = "^2.0.5"
 streamlit = "^1.45.0"
 streamlit-extras = "^0.7.1"
+docstr-coverage = "^2.3.2"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

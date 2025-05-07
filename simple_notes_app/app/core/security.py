@@ -1,5 +1,4 @@
 """User security and autorization mechanisms"""
-
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
@@ -19,12 +18,27 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a plain password against a hashed password."""
+    """Verify a plain password against a hashed password.
+
+    Args:
+        plain_password: initial password of User
+        hashed_password: hashed one
+
+    Returns:
+        True or False, depends on match
+    """
     return pwd_context.verify(plain_password, hashed_password)
 
 
 def get_password_hash(password: str) -> str:
-    """Hash a password using bcrypt."""
+    """Hash a password using bcrypt.
+
+    Args:
+        password: user password
+
+    Returns:
+        String hashed password
+    """
     return pwd_context.hash(password)
 
 
@@ -32,7 +46,15 @@ def create_access_token(
     data: dict,
     expires_delta: Optional[timedelta] = None
 ) -> str:
-    """Create a JWT access token."""
+    """Create a JWT access token.
+
+    Args:
+        data: user data
+        expires_delta: time to live for JWT token
+
+    Returns:
+        String JWT access token
+    """
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
@@ -45,7 +67,14 @@ def create_access_token(
 
 
 def decode_access_token(token: str) -> dict:
-    """Decode and validate a JWT token."""
+    """Decode and validate a JWT token.
+
+    Args:
+        token: JWT token
+
+    Returns:
+        Dict payload if token can be decoded, otherwise None
+    """
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload

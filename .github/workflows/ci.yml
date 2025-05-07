@@ -37,6 +37,6 @@ jobs:
       - name: Check for security via bandit
         run: poetry run bandit -r .
       - name: Check maintainability index
-        run: poetry run radon mi app/ -n A
+        run: poetry run radon mi app/ -n A -s
       - name: Check documentation coverage
-        run: poetry run interrogate app/ --fail-under=90 -q
+        run: poetry run docstr-coverage app/ -F 90
