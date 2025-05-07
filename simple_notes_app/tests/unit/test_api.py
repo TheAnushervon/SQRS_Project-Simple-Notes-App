@@ -1,8 +1,7 @@
 """Unit tests for app"""
-
-from fastapi.testclient import TestClient
-from app.main import app
 import uuid
+from app.main import app
+from fastapi.testclient import TestClient
 
 
 client = TestClient(app)
@@ -155,3 +154,66 @@ def test_delete_api_notes():
                                            "Authorization": token})
     if response.status_code != 200:
         raise AssertionError(f"Expected 200, got {response.status_code}")
+
+
+def test_translate():
+    username = f"user_${uuid.uuid4()}"
+    email = f"user_${uuid.uuid4()}@example.com"
+    response = client.post("/signup/",
+                           headers={"accept": "application/json"},
+                           json={
+                               "username": username,
+                               "email": email,
+                               "password": "string"
+                           })
+    data = {"username": username, "password": "string"}
+    response = client.post("/login/", data=data)
+
+    token = "Bearer " + response.json()["access_token"]
+    request = {"text": "яблоко"}
+    response = client.post(
+        "/api/translate/", headers={"accept": "application/json",
+                                    "Authorization": token}, json=request)
+    if response.status_code != 200:
+        raise AssertionError(f"Expected 200, got {response.status_code}")
+
+    translated = response.json()["translated"]
+    if translated != "apple":
+        raise AssertionError(f"Expected correct translation, got {translated}")
+
+
+def test_check_translate():
+    username = f"user_${uuid.uuid4()}"
+    email = f"user_${uuid.uuid4()}@example.com"
+    response = client.post("/signup/",
+                           headers={"accept": "application/json"},
+                           json={
+                               "username": username,
+                               "email": email,
+                               "password": "string"
+                           })
+    data = {"username": username, "password": "string"}
+    response = client.post("/login/", data=data)
+
+    token = "Bearer " + response.json()["access_token"]
+    request = {"text": "яблоко"}
+    response = client.post(
+        "/api/translate/check/",
+        headers={"accept": "application/json",
+                 "Authorization": token},
+        json=request)
+
+    check = response.json()["should_translate"]
+    if check is not True:
+        raise AssertionError(f"Expected True, got {check}")
+
+    request = {"text": "apple"}
+    response = client.post(
+        "/api/translate/check/",
+        headers={"accept": "application/json",
+                 "Authorization": token},
+        json=request)
+
+    check = response.json()["should_translate"]
+    if check is not False:
+        raise AssertionError(f"Expected False, got {check}")

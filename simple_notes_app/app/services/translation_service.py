@@ -60,12 +60,11 @@ def _translate_text(text: str, src_lang: str = "ru", dst_lang: str = "en") -> st
     return "".join(translated)
 
 
-def translate_note(db: Session, note_id: int, text: str) -> str:
+def translate_note(db: Session, text: str) -> str:
     """Translation of note
 
     Args:
         db: session of database
-        note_id: ID of the note need to be translated
         text: note's content
 
     Returns:
@@ -77,9 +76,7 @@ def translate_note(db: Session, note_id: int, text: str) -> str:
         return tr.translated
 
     translated = _translate_text(text)
-    tr = Translation(
-        note_id=note_id, src_hash=h, src_lang="ru", dst_lang="en", translated=translated
-    )
+    tr = Translation(src_hash=h, src_lang="ru", dst_lang="en", translated=translated)
     db.add(tr)
     db.commit()
     return translated

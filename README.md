@@ -153,6 +153,12 @@ poetry install --no-root
 poetry run uvicorn app.main:app --reload
 ```
 
+4. **Run the front end (separate terminal)**
+
+```bash
+PYTHONPATH=. poetry run streamlit run streamlit_app/Home.py --server.address=0.0.0.0
+```
+
 
 ### Access the Application
 

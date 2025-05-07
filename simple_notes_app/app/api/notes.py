@@ -13,12 +13,10 @@ from app.services.note_service import (
 from app.schemas.note import NoteCreate, NoteUpdate, NoteInDB
 from app.core.database import get_db_session
 from app.dependencies.auth import get_current_user
-from async_lru import alru_cache
 
 router = APIRouter(prefix="/api/notes", tags=["notes"])
 
 
-@alru_cache
 @router.get("/", response_model=list[NoteInDB])
 async def get_notes(
     db: Session = Depends(get_db_session),
@@ -37,7 +35,6 @@ async def get_notes(
     return notes
 
 
-@alru_cache
 @router.post("/", response_model=NoteInDB)
 async def create_new_note(
     note: NoteCreate,
@@ -58,7 +55,6 @@ async def create_new_note(
     return db_note
 
 
-@alru_cache
 @router.put("/{note_id}", response_model=NoteInDB)
 async def update_existing_note(
     note_id: int,
@@ -87,7 +83,6 @@ async def update_existing_note(
     return db_note
 
 
-@alru_cache
 @router.delete("/{note_id}")
 async def delete_existing_note(
     note_id: int,
