@@ -15,8 +15,9 @@ def test_register():
 
         at.button[0].click().run()
 
-        assert at.success[0].value == (
-            "Registration successful You can now log in from Home.")
+        if not at.success[0].value == (
+                "Registration successful You can now log in from Home."):
+            raise AssertionError("Registration mock fails")
 
 
 def test_login():
@@ -29,9 +30,11 @@ def test_login():
 
         at.button[0].click().run()
 
-        assert at.session_state['token'] == "token"
+        if not at.session_state['token'] == "token":
+            raise AssertionError("Token mock does not match")
 
         at.run()
 
         success_value = f"Logged in as **{at.session_state['username']}**."
-        assert at.success[0].value == success_value
+        if not at.success[0].value == success_value:
+            raise AssertionError("Cannot get success value")
