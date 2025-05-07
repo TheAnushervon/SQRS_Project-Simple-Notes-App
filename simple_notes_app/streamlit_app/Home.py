@@ -2,10 +2,8 @@ from streamlit_app.utils import login
 import streamlit as st
 
 st.set_page_config(
-    page_title="Simple Notes – Login", 
-    page_icon="📝",
-    initial_sidebar_state="collapsed"
-    )
+    page_title="Simple Notes – Login", page_icon="📝", initial_sidebar_state="collapsed"
+)
 
 if "token" not in st.session_state:
     st.session_state.token = None

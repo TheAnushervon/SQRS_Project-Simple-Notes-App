@@ -48,9 +48,7 @@ def translate_note(db: Session, text: str) -> str:
         return tr.translated
 
     translated = _translate_text(text)
-    tr = Translation(
-        src_hash=h, src_lang="ru", dst_lang="en", translated=translated
-    )
+    tr = Translation(src_hash=h, src_lang="ru", dst_lang="en", translated=translated)
     db.add(tr)
     db.commit()
     return translated

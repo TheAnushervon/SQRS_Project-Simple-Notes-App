@@ -1,13 +1,15 @@
 import streamlit as st
 from streamlit_app.utils import signup
 
-st.set_page_config(page_title="Simple Notes – Register")
+st.set_page_config(
+    page_title="Simple Notes – Register", initial_sidebar_state="collapsed"
+)
 
 st.title("🆕 Register")
 
 with st.form("register"):
     username = st.text_input("Username")
-    email    = st.text_input("Email")
+    email = st.text_input("Email")
     password = st.text_input("Password", type="password")
     submitted = st.form_submit_button("Sign up")
     if submitted:
