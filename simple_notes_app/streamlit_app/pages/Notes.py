@@ -21,37 +21,53 @@ with st.form("new_note", clear_on_submit=True):
         st.rerun()
 
 # ----------  Existing notes ---------- #
-notes = get_notes(token)
+notes = sorted(get_notes(token), key=lambda n: n["created_at"], reverse=True)
+
+for n in notes:        
+    st.session_state.setdefault(f"title_state_{n['id']}", n["title"])
+    st.session_state.setdefault(f"content_state_{n['id']}", n["content"])
+
 if not notes:
     st.info("No notes yet — add one above.")
 else:
     for n in notes:
+        def auto_save(note_id: int):
+            title_key = f"title_state_{note_id}"
+            content_key = f"content_state_{note_id}"
+            update_note(token, note_id,
+                        st.session_state[title_key],
+                        st.session_state[content_key])
+            st.toast(f"Note {note_id} saved.")
+
+
         with st.expander(
             f"{n['title']} "
-            f"({datetime.fromisoformat(n['created_at']).strftime('%Y‑%m‑%d %H:%M')})"
+            f"({datetime.fromisoformat(n['created_at']).strftime('%Y-%m-%d %H:%M')})",
         ):
-            new_title   = st.text_input("Edit title", n["title"],
-                                        key=f"title_{n['id']}")
-            new_content = st.text_area("Edit content", n["content"],
-                                        key=f"content_{n['id']}")
+            st.text_input("Edit title",
+                          key=f"title_state_{n['id']}",
+                          on_change=auto_save,
+                          args=(n['id'],))
 
-            cols = st.columns(3)
+            st.text_area("Edit content",
+                         key=f"content_state_{n['id']}",
+                         on_change=auto_save,
+                         args=(n['id'],))
+            
+
+            cols = st.columns(2)
             with cols[0]:
-                if st.button("Save", key=f"save_{n['id']}"):
-                    update_note(token, n["id"], new_title, new_content)
+                if st.button("Delete", key=f"del_{n['id']}"):
+                    delete_note(token, n["id"])
+                    del st.session_state[f"title_state_{n['id']}"]
+                    del st.session_state[f"content_state_{n['id']}"]
                     st.rerun()
 
             with cols[1]:
-                if st.button("Delete", key=f"del_{n['id']}"):
-                    delete_note(token, n["id"])
-                    st.rerun()
-
-            # ----------  Translation ---------- #
-            if should_translate(token, n["content"]):
-                with cols[2]:
+                if should_translate(token, st.session_state[f"content_state_{n['id']}"]):
                     if st.button("Translate", key=f"tr_{n['id']}"):
                         try:
-                            translated = translate_text(token, n["content"])
+                            translated = translate_text(token, st.session_state[f"content_state_{n['id']}"])
                             st.success("Translated text ↓")
                             st.write(translated)
                         except RuntimeError as e:

@@ -1,7 +1,11 @@
 from streamlit_app.utils import login
 import streamlit as st
 
-st.set_page_config(page_title="Simple Notes – Login", page_icon="📝")
+st.set_page_config(
+    page_title="Simple Notes – Login", 
+    page_icon="📝",
+    initial_sidebar_state="collapsed"
+    )
 
 if "token" not in st.session_state:
     st.session_state.token = None
@@ -25,7 +29,7 @@ else:
             if ok:
                 st.session_state.token = resp
                 st.session_state.username = username
-                st.rerun()
+                st.switch_page("pages/Notes.py")
             else:
                 st.error(resp)
 
