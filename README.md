@@ -101,7 +101,7 @@ TOTAL                                   266     15    94%
 - **Error Handling**: We implemented rollback mechanism if any errors occur, see detailed in `app/core/database.py`
 - **Atomic Transactions**: SQLite transactions managed via SQLAlchemy, ensuring data consistency.
 
-Also we made a mutation testing to see how application behaves in unexpected scenarios:
+Also we made a **mutation testing** to see how application behaves in unexpected scenarios:
 
 ```bash
 ╰─ poetry run mutmut run
@@ -121,6 +121,25 @@ Running mutation testing
 As we can see, most of the mutants are killed. 
 
 TODO for us in the future, discover anomaly of translation service which brings 40 survived mutants (we guess all of them surviving for some reason, so we forced to exclude it from mutation...) and fix other survided 5-7 as well.
+
+Additionally we made a UI testing with SeleniumBase to simulate how potentially user will interact with our system:
+
+```
+...
+poetry run pytest selenium/ --browser=chrome --headless
+============================= test session starts ==============================
+platform linux -- Python 3.11.12, pytest-8.3.5, pluggy-1.5.0
+rootdir: /home/runner/work/SQRS_Project-Simple-Notes-App/SQRS_Project-Simple-Notes-App/simple_notes_app
+configfile: pyproject.toml
+plugins: metadata-3.1.1, xdist-3.6.1, cov-6.1.1, anyio-4.9.0, rerunfailures-15.0, Faker-37.1.0, seleniumbase-4.37.0, ordering-0.6, html-4.0.2
+collected 2 items
+
+selenium/test_selenium.py ..                                             [100%]
+
+============================== 2 passed in 29.03s ==============================
+```
+
+It's from CI, but to test it locally and see how it really simulates browser, set option to `--headed`.
 
 ### Performance
 
