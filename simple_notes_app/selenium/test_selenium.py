@@ -7,7 +7,8 @@ from seleniumbase import BaseCase
 
 class PageContentTest(BaseCase):
 
-    password = f"{uuid.uuid4()}"
+    user = f"{uuid.uuid4()}"
+    password = "very_safe_password"
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -19,8 +20,8 @@ class PageContentTest(BaseCase):
     def test_1_register(self) -> None:
         self.open("http://localhost:8501/Register")
 
-        user = "user1"
-        email = "user@example.com"
+        user = self.user
+        email = f"{user}@example.com"
         password = self.password
         self.type("input[aria-label='Username']", user)
         self.type("input[aria-label='Email']", email)
@@ -35,7 +36,7 @@ class PageContentTest(BaseCase):
     def test_2_login_and_notes(self) -> None:
         self.open("http://localhost:8501")
 
-        user = "user1"
+        user = self.user
         password = self.password
         self.type("input[aria-label='Username']", user)
         self.type("input[aria-label='Password']", password)
@@ -60,7 +61,9 @@ class PageContentTest(BaseCase):
         self.assert_text("Edit title")
         title = "new_title_check"
         content = "яблоко"
-        self.type("input[aria-label='Edit title']", title)
+        self.type("input[aria-label='Edit title']", title + "\n")
+        self.click(f'div[data-testid="stExpander"]:contains("{title}")')
+        self.assert_text("Edit content")
         self.type("textarea[aria-label='Edit content']", content)
 
         time.sleep(2)
