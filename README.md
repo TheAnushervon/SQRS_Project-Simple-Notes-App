@@ -139,7 +139,7 @@ selenium/test_selenium.py ..                                             [100%]
 ============================== 2 passed in 29.03s ==============================
 ```
 
-It's from CI, but to test it locally and see how it really simulates browser, set option to `--headed`.
+It's from CI, but to test it locally and see how it really simulates browser, set option to `--headed`. For slower showcase use also `--demo` option.
 
 ### Performance
 
@@ -302,7 +302,7 @@ Anushervon Qodirzoda | a.qodirzoda@innopolis.university
 - API: Notes, Authorization
 - Docker
 
-Iliays Dzhabbarov | i.dzhabbarov@innopolis.university
+Iliyas Dzhabbarov | i.dzhabbarov@innopolis.university
 
 - API: Translation
 - Frontend on Streamlit

@@ -5,3 +5,4 @@ simple_notes_app/app/db/notes.db
 .coverage
 .env
 mutants/
+downloaded_files/
