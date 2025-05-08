@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: ["dev1", "dev/iliyasone", "dev2", "tests/performance"]
+  pull_request:
+    branches: ["main", "development"]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: simple_notes_app
+    env:
+      X_RAPID_API_KEY: ${{ secrets.X_RAPID_API_KEY }}
+      X_RAPID_API_HOST: deep-translate1.p.rapidapi.com
+      DATABASE_URL: sqlite:///app/db/notes.db
+      JWT_SECRET_KEY: ci-test-secret-dummy-12345
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install
+      - name: Verify of compliance with PEP8 standard
+        run: poetry run flake8 .
+      - name: Cyclomatic complexity analysis (fail if exceeds 5)
+        run: poetry run lizard -C 5 -i 0
+      - name: Run unit tests
+        run: poetry run pytest tests/unit/ --cov=app --cov-fail-under=90
+      - name: Run UI test with Selenium
+        run: poetry run pytest selenium/ --browser=chrome --headless
+      - name: Run mutation testing
+        run: poetry run mutmut run
+      - name: Check for security via bandit
+        run: poetry run bandit -c pyproject.toml -r .
+      - name: Check maintainability index
+        run: poetry run radon mi app/ streamlit_app/ -n A -s
+      - name: Check documentation coverage
+        run: poetry run docstr-coverage app/ streamlit_app/ -F 90

@@ -1,7 +1,5 @@
-version: '3.8'
-
-services: 
-  app: 
+services:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,14 +7,28 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+    env_file:
+      - .env
+    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+  streamlit:
     environment:
-      - DATABASE_URL=sqlite:////app/app/db/notes.db
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-
+    - PYTHONPATH=/app
+    - API_URL=http://app:8000
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    working_dir: /app/
+    command: poetry run streamlit run streamlit_app/Home.py --server.address=0.0.0.0
   db:
     image: alpine:3.18
     volumes:
-      - db_data:/app/db  
+      - db_data:/app/db
     command: tail -f /dev/null
 
 volumes:
