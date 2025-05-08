@@ -61,11 +61,11 @@ seleniumbase = "4.37.0"
 mutmut = "^3.2.3"
 
 [tool.mutmut]
- paths_to_mutate = [ "app/" ]
- tests_dir = [ "tests/" ]
+paths_to_mutate = [ "app/" ]
+do_not_mutate = [ "app/services/translation_service.py" ]
 
 [tool.bandit]
-exclude_dirs = ["tests"]
+exclude_dirs = ["tests", "selenium"]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

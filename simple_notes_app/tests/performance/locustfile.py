@@ -81,3 +81,25 @@ class WebsiteUser(HttpUser):
                     headers={"accept": "application/json",
                              "Authorization": self.token},
                     name="/api/notes/{note_id}")
+
+    @task(2)
+    def translate_note(self):
+        if self.token:
+            request = {"text": "яблоко"}
+            self.client.post(
+                "/api/translate/",
+                headers={"accept": "application/json",
+                         "Authorization": self.token},
+                json=request,
+                name="/api/translate/")
+
+    @task(2)
+    def should_translate_note(self):
+        if self.token:
+            request = {"text": "яблоко"}
+            self.client.post(
+                "/api/translate/check",
+                headers={"accept": "application/json",
+                         "Authorization": self.token},
+                json=request,
+                name="/api/translate/check/")
