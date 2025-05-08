@@ -63,11 +63,14 @@ class PageContentTest(BaseCase):
         self.type("input[aria-label='Edit title']", title)
         self.type("textarea[aria-label='Edit content']", content)
 
-        time.sleep(1)
+        time.sleep(2)
 
         # Notes: translate
         self.assert_text(f"{title}")
         self.click(f'div[data-testid="stExpander"]:contains("{title}")')
+
+        time.sleep(1)
+
         self.click('button:contains("Translate")')
         self.assert_text("apple")
 
