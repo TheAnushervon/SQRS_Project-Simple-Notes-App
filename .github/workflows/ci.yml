@@ -17,6 +17,7 @@ jobs:
       X_RAPID_API_HOST: deep-translate1.p.rapidapi.com
       DATABASE_URL: sqlite:///app/db/notes.db
       JWT_SECRET_KEY: ci-test-secret-dummy-12345
+      PYTHONPATH: .
     steps:
       - uses: actions/checkout@v4
       - name: Set Up Python
