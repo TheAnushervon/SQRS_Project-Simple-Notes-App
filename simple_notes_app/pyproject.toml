@@ -11,7 +11,7 @@ package-mode = false
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<3.13"
 fastapi = "0.115.12"
 uvicorn = "0.34.2"
 bcrypt = ">=4.3.0,<5.0.0"
@@ -28,11 +28,11 @@ ecdsa = "0.19.1"
 email-validator = "2.2.0"
 flake8 = "7.2.0"
 greenlet = "3.2.1"
-h11 = "0.16.0"
+h11 = ">=0.14.0, <=0.16.0"
 idna = "3.10"
 iniconfig = "2.1.0"
 mccabe = "0.7.0"
-packaging = "25.0"
+packaging = "^24.0"
 pluggy = "1.5.0"
 pyasn1 = "0.4.8"
 pycodestyle = "2.13.0"
@@ -54,12 +54,18 @@ python-dotenv = "^1.1.0"
 lizard = "^1.17.28"
 locust = "^2.37.0"
 async-lru = "^2.0.5"
+streamlit = "^1.45.0"
+streamlit-extras = "^0.7.1"
 docstr-coverage = "^2.3.2"
+seleniumbase = "4.37.0"
 mutmut = "^3.2.3"
 
 [tool.mutmut]
  paths_to_mutate = [ "app/" ]
  tests_dir = [ "tests/" ]
+
+[tool.bandit]
+exclude_dirs = ["tests"]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
