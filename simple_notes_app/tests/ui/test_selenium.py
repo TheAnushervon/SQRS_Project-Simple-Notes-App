@@ -1,10 +1,14 @@
 import subprocess
 import time
+import uuid
 
 from seleniumbase import BaseCase
 
 
 class PageContentTest(BaseCase):
+
+    password = f"{uuid.uuid4()}"
+
     @classmethod
     def setUpClass(cls) -> None:
         cls.backend_process = subprocess.Popen(
@@ -17,7 +21,7 @@ class PageContentTest(BaseCase):
 
         user = "user1"
         email = "user@example.com"
-        password = "string"
+        password = self.password
         self.type("input[aria-label='Username']", user)
         self.type("input[aria-label='Email']", email)
         self.type("input[aria-label='Password']", password)
@@ -32,7 +36,7 @@ class PageContentTest(BaseCase):
         self.open("http://localhost:8501")
 
         user = "user1"
-        password = "string"
+        password = self.password
         self.type("input[aria-label='Username']", user)
         self.type("input[aria-label='Password']", password)
         self.click('button[data-testid="stBaseButton-secondaryFormSubmit"]')

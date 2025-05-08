@@ -38,7 +38,7 @@ jobs:
       - name: Run UI test with Selenium
         run: poetry run pytest tests/ui/ --browser=chrome --headless
       - name: Check for security via bandit
-        run: poetry run bandit -r .
+        run: poetry run bandit -c pyproject.toml -r .
       - name: Check maintainability index
         run: poetry run radon mi app/ -n A -s
       - name: Check documentation coverage
