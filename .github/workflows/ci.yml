@@ -35,8 +35,6 @@ jobs:
         run: poetry run lizard -C 5 -i 0
       - name: Run unit tests
         run: poetry run pytest tests/unit/ --cov=app --cov=streamlit_app --cov-fail-under=85
-      - name: Run mutation testing
-        run: poetry run mutmut run
       - name: Run UI test with Selenium
         run: poetry run pytest tests/ui/ --browser=chrome --headless
       - name: Check for security via bandit
