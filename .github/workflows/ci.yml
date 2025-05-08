@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: ["dev1", "dev/iliyasone", "dev2"]
+    branches: ["dev1", "dev/iliyasone", "dev2", "tests/performance"]
   pull_request:
     branches: ["main", "development"]
 
@@ -34,9 +34,11 @@ jobs:
       - name: Cyclomatic complexity analysis (fail if exceeds 5)
         run: poetry run lizard -C 5 -i 0
       - name: Run unit tests
-        run: poetry run pytest tests/unit/ --cov=app --cov=streamlit_app --cov-fail-under=85
+        run: poetry run pytest tests/unit/ --cov=app --cov-fail-under=90
       - name: Run UI test with Selenium
-        run: poetry run pytest tests/ui/ --browser=chrome --headless
+        run: poetry run pytest selenium/ --browser=chrome --headless
+      - name: Run mutation testing
+        run: poetry run mutmut run
       - name: Check for security via bandit
         run: poetry run bandit -c pyproject.toml -r .
       - name: Check maintainability index
