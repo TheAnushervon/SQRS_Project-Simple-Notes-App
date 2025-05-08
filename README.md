@@ -101,7 +101,7 @@ TOTAL                                   266     15    94%
 - **Error Handling**: We implemented rollback mechanism if any errors occur, see detailed in `app/core/database.py`
 - **Atomic Transactions**: SQLite transactions managed via SQLAlchemy, ensuring data consistency.
 
-Also we made a **mutation testing** to see how application behaves in unexpected scenarios:
+Also we have a **mutation testing** to see how application behaves in unexpected scenarios:
 
 ```bash
 ╰─ poetry run mutmut run
@@ -122,7 +122,7 @@ As we can see, most of the mutants are killed.
 
 TODO for us in the future, discover anomaly of translation service which brings 40 survived mutants (we guess all of them surviving for some reason, so we forced to exclude it from mutation...) and fix other survided 5-7 as well.
 
-Additionally we made a UI testing with SeleniumBase to simulate how potentially user will interact with our system:
+To simulate how potentially user will interact with our system - we made a **UI testing** with SeleniumBase:
 
 ```
 ...
